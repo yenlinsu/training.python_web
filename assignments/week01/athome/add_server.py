@@ -22,17 +22,23 @@ server.bind(server_address)
 # Listen for incoming connections
 server.listen(100)
 
-while True:
-    # Wait for a connection
-    con, addr = server.accept()
-    try:
-        # Receive the data and send it back
-        message = con.recv(4096)
-        delimiter = ','
-        num = message.split(delimiter)
-        total = int(num[0]) + int(num[1])
-        con.sendall(str(total))
+try:
 
-    finally:
-        # Clean up the connection
-        con.close()
+    while True:
+        # Wait for a connection
+        con, addr = server.accept()
+        try:
+            # Receive the data and send it back
+            message = con.recv(4096)
+            delimiter = ','
+            num = message.split(delimiter)
+            total = int(num[0]) + int(num[1])
+            con.sendall(str(total))
+
+        finally:
+            # Clean up the connection
+            con.close()
+
+except KeyboardInterrupt:
+    server.close()
+    sys.exit()
