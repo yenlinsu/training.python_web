@@ -1,0 +1,12 @@
+hi Chris, sorry for the late submission.  I stunbled across several challenges that took me a long time to resolve.
+
+I was able to finish the labs and the assignment up to the "dynamic time-page" point, without the bonus (running it on the VM).
+
+However, in I ran into an issue that I can't figure out.  I added another directory (web/images/test), and a file inside that directory (web/images/test/test.txt).
+
+the URI works fine until the test.txt file.  For some reason, when I click the link on that file, the URI being passed with the request becomes /images/images/test/test.txt,
+which then resulted a 404 error.
+
+Thanks,
+
+Allen Su
