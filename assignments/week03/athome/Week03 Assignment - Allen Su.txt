@@ -1,0 +1,3 @@
+# 1. Use Facebook Graph API to get name and location of friends
+# 2. Parse the data obtained from Facebook Graph API and scrub it to the desired format
+# 3. Plug the locations of my friends on Google Map using Google static map API
