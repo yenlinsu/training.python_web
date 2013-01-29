@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
-import socket 
+import socket
 import os
+import email.utils
+import time
+#import httpdate
 
-import httpdate
-
-host = '' # listen on all connections (WiFi, etc) 
-port = 50000 
+host = '' # listen on all connections (WiFi, etc)
+port = 50000
 backlog = 5 # how many connections can we stack up
 size = 1024 # number of bytes to receive at once
 
@@ -15,15 +16,15 @@ root_dir = 'web' # must be run from code dir...
 print "point your browser to http://localhost:%i"%port
 
 ## create the socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # set an option to tell the OS to re-use the socket
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 # the bind makes it a server
-s.bind( (host,port) ) 
-s.listen(backlog) 
+s.bind( (host,port) )
+s.listen(backlog)
 
-html = open("tiny_html.html").read()
+#html = open("tiny_html.html").read()
 
 mime_types={}
 mime_types['html'] =  "text/html"
@@ -33,13 +34,19 @@ mime_types['png']  =  "image/png"
 mime_types['jpeg'] =  "image/jpg"
 mime_types['jpg']  =  "image/jpg"
 
+def httpdate():
+    """Returns a date/time value in RFC1123 format"""
+    now = time.gmtime()
+    stamp = time.mktime(now)
+    return email.utils.formatdate(stamp, False, True)
+
 def OK_response(entity, extension='html'):
     """
     returns an HTTP response: header and entity in a string
     """
     resp = []
     resp.append('HTTP/1.1 200 OK')
-    resp.append(httpdate.httpdate_now())
+    resp.append(httpdate())
     type = mime_types.get(extension, 'text/plain')
     resp.append( 'Content-Type: %s'%type )
     resp.append('Content-Length: %i'%len(entity))
@@ -51,15 +58,15 @@ def OK_response(entity, extension='html'):
 def Error_response(URI):
     """
     returns an HTTP 404 Not Found Error response:
-    
-    URI is the name of the entity not found 
+
+    URI is the name of the entity not found
     """
     resp = []
     resp.append('HTTP/1.1 404 Not Found')
-    resp.append(httpdate.httpdate_now())
+    resp.append(httpdate())
     resp.append('Content-Type: text/plain')
-    
-    msg = "404 Error:\n %s \n not found"%( URI )    
+
+    msg = "404 Error:\n %s \n not found"%( URI )
 
     resp.append('Content-Length: %i'%( len(msg) ) )
     resp.append('')
@@ -70,12 +77,12 @@ def Error_response(URI):
 
 def parse_request(request):
     """
-    parse an HTTP request 
-    
+    parse an HTTP request
+
     returns the URI asked for
-    
+
     note: minimal parsing -- only supprt GET
-    
+
     example:
     GET / HTTP/1.1
     Host: localhost:50000
@@ -88,14 +95,14 @@ def parse_request(request):
     """
     # first line should be the method line:
     lines = request.split("\r\n")
-    
+
     method, URI, protocol = lines[0].split()
 
     # a bit of checking:
     if method.strip() != "GET":
-        raise ValueError("I can only process a GET request") 
+        raise ValueError("I can only process a GET request")
     if protocol.split('/')[0] != "HTTP":
-        raise ValueError("I can only process an HTTP request") 
+        raise ValueError("I can only process an HTTP request")
 
     return URI
 
@@ -132,12 +139,13 @@ def get_time_page():
     """
     returns and html page with the current time in it
     """
-    time = httpdate.httpdate_now()
+    time = httpdate()
     html = "<html>  <body>  <h1> %s </h1> </body> </html>"%time
     return html
 
 def get_file(URI):
-        
+
+    print 'URI = ', URI
     URI = URI.strip('/') #weird-- os.path.join does not like a leading slash
     # check if this is the time server option
     if URI.lower() == "get_time":
@@ -152,7 +160,7 @@ def get_file(URI):
             return format_dir_list(URI), 'htm'
         else:
             raise ValueError("there is nothing by that name")
-    
+
 
 while True: # keep looking for new connections forever
     client, address = s.accept() # look for a connection
@@ -165,6 +173,7 @@ while True: # keep looking for new connections forever
             response = OK_response(file_data, ext)
         except ValueError:
             response = Error_response(URI)
-        client.send(response) 
+        print response
+        client.send(response)
         client.close()
 

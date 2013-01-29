@@ -103,13 +103,13 @@ def format_dir_list(u):
     html.append("<h3>Directories:</h3>")
     html.append("  <ul>")
     for d in dirs:
-        path = u + '/' + d
+        path = (os.path.join(u, d)).replace('\\', '/')
         html.append('    <li> <a href="%s">%s </a></li>' % (path, d))
     html.append("  </ul>")
     html.append("<h3>Files:</h3>")
     html.append("  <ul>")
     for f in files:
-        path = u + '/' + f
+        path = (os.path.join(u, f)).replace('\\', '/')
         html.append('    <li> <a href="%s"> %s </a> </li>' % (path, f))
     html.append("  </ul>")
     html.append("</body> </html>")
