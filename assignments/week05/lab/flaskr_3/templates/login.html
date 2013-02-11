@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Login</h2>
+  {% if error -%}
+    <p class="error"><strong>Error</strong> {{ error }}
+  {%- endif %}
+  <form action="{{ url_for('login') }}" method="POST">
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username"/>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password"/>
+    </div>
+    <div class="control_row">
+      <input type="submit" name="Login" value="Login"/>
+    </div>
+  </form>
+
+<h1>Flaskr</h1>       <!-- already there -->
+<div class="metanav"> <!-- add all this -->
+{% if not session.logged_in %}
+  <a href="{{ url_for('login') }}">log in</a>
+{% else %}
+  <a href="{{ url_for('logout') }}">log_out</a>
+{% endif %}
+</div>
+{% for message in get_flashed_messages() %}
+<div class="flash">{{ message }}</div>
+{% endfor %}
+<div class="content"> <!-- already there -->

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Posts</h2>
+  <ul class="entries">
+  {% for entry in entries %}
+    <li>
+      <h2>{{ entry.title }}</h2>
+      <div class="entry_body">
+      {{ entry.text|safe }}
+      </div>
+    </li>
+  {% else %}
+    <li><em>No entries here so far</em></li>
+  {% endfor %}
+  </ul>

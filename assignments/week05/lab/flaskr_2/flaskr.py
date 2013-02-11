@@ -2,6 +2,8 @@ import sqlite3
 from contextlib import closing
 
 from flask import Flask
+from flask import g
+from flask import render_template
 
 
 # configuration goes here
@@ -21,6 +23,28 @@ def init_db():
         with app.open_resource('schema.sql') as f:
             db.cursor().executescript(f.read())
         db.commit()
+
+@app.before_request
+def before_request():
+    g.db = connect_db()
+
+def teardown_request(exception):
+    g.db.close()
+
+def write_entry(title, text):
+    g.db.execute('insert into entries (title, text) values (?, ?)',
+                 [title, text])
+    g.db.commit()
+
+def get_all_entries():
+    cur = g.db.execute('select title, text from entries order by id desc')
+    entries = [dict(title=row[0], text=row[1]) for row in cur.fetchall()]
+    return entries
+
+@app.route('/')
+def show_entries():
+    entries = get_all_entries()
+    return render_template('show_entries.html', entries=entries)
 
 
 if __name__ == '__main__':
