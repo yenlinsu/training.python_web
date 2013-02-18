@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Latest Blog Entries</h1>
+  {% for entry in blog_entries %}
+    <div class="entry">
+      <h2><a href="{% url entry_detail entry.pk %}">{{ entry.title }}</a></h2>
+    </div>
+  {% endfor %}
+  <h3><a href="{% url entry_new %}">Add a new blog entry</a></h3>
+{% endblock %}
+
+
