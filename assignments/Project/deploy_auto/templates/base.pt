@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>${project}</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+  <meta name="keywords" content="python web application" />
+  <meta name="description" content="pyramid web application" />
+  <link rel="shortcut icon"
+        href="/static/favicon.ico" />
+  <link rel="stylesheet"
+        href="/static/pylons.css"
+        type="text/css" media="screen" charset="utf-8" />
+  <link rel="stylesheet" 
+        href="/deform_static/css/form.css"
+        type="text/css" />
+  <script type="text/javascript"
+          src="/deform_static/scripts/jquery-1.4.2.min.js"></script>
+  <script type="text/javascript"
+          src="/deform_static/scripts/deform.js"></script>
+  <!--[if lte IE 6]>
+  <link rel="stylesheet"
+        href="/static/ie6.css"
+        type="text/css" media="screen" charset="utf-8" />
+  <![endif]-->
+</head>
+<body>
+  <div id="wrap">
+    <div id="top-small">
+      <div class="top-small align-center">
+        <div>
+          <img width="220" height="50" alt="pyramid"
+        src="/static/pyramid-small.png" />
+        </div>
+      </div>
+    </div>
+    <div id="middle">
+      <div class="middle align-center">
+        <p class="app-welcome">
+          Welcome to the <span class="app-name">${project}</span>
+        </p>
+        <br>
+        <br>
+      </div>
+      <div class="middle align-right">
+        <div id="left" class="align-left">
+          <a href="${request.resource_url(page)}deploy">Start the Store Deployment Process</a> 
+        </div>
+        <div id="right" class="align-right">
+          <a href="${request.resource_url(page)}query">Query Store Specific Data</a>
+        </div>
+      </div>
+    </div>
+    <div id="bottom">
+      <div class="bottom align-right">
+        <div id="left" class="align-left">
+          <metal:deploypage define-slot="deploypage"/>
+        </div>
+        <div id="right" class="align-left">
+          <metal:deployform define-slot="deployform"/>
+        </div>
+        <div id="left" class="align-left">
+          <metal:querypage define-slot="querypage"/>
+        </div>
+         <div id="right" class="align-left">
+          <metal:queryform define-slot="queryform"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <div class="footer">Some page footer stuff</div>
+  </div>
+</body>
+</html>

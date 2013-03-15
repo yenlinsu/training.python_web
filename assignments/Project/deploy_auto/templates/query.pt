@@ -1,0 +1,9 @@
+<metal:main use-macro="load: base.pt">
+  <metal:querypage fill-slot="querypage">
+    <h3>Please input store number</h3>
+  </metal:querypage>
+  <metal:queryform fill-slot="queryform">
+    <div tal:content="structure form">form</div>
+    <p tal:condition="values">Data successfully submitted!</p>
+  </metal:queryform>
+</metal:main>

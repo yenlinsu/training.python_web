@@ -1,0 +1,9 @@
+<metal:main use-macro="load: base.pt">
+  <metal:deploypage fill-slot="deploypage">
+    <h3>Please input store specific info</h3>
+  </metal:deploypage>
+  <metal:deployform fill-slot="deployform">
+    <div tal:content="structure form">form</div>
+    <div text="#004400" tal:condition="values">Data successfully submitted!</div>
+  </metal:deployform>
+</metal:main>
